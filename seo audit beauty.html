@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Audit beautyfactory.md | Professional Analysis | Garbuz.Online</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0e15;
+            --bg-card: #151b23;
+            --green: #00ff41;
+            --cyan: #00ffff;
+            --red: #ff3333;
+            --yellow: #ffd700;
+            --text: #e0e0e0;
+            --text-dim: #a0a0a0;
+            --border: #1a2332;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg-dark);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 255, 65, 0.02) 2px, rgba(0, 255, 65, 0.02) 4px);
+            pointer-events: none;
+            animation: scan 8s linear infinite;
+        }
+
+        @keyframes scan { to { transform: translateY(20px); } }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; position: relative; z-index: 1; }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--green), var(--cyan));
+            z-index: 9999;
+            transition: width 0.3s;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 40px;
+            border: 2px solid var(--green);
+            background: linear-gradient(135deg, #0f1419, var(--bg-card));
+            box-shadow: 0 0 40px rgba(0, 255, 65, 0.3);
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 50px;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            inset: -50%;
+            background: radial-gradient(circle, rgba(0, 255, 65, 0.08) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.5; }
+            50% { transform: scale(1.1) rotate(180deg); opacity: 0.8; }
+        }
+
+        h1 {
+            font-size: 3em;
+            color: var(--green);
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+            animation: glitch 3s infinite;
+        }
+
+        @keyframes glitch {
+            0%, 100% { text-shadow: 0 0 10px rgba(0, 255, 65, 0.3); }
+            25% { text-shadow: -2px 0 var(--cyan), 2px 0 var(--red); }
+            50% { text-shadow: 2px 0 var(--cyan), -2px 0 var(--red); }
+        }
+
+        .site-url {
+            font-size: 1.5em;
+            color: var(--cyan);
+            margin: 20px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-stat-value {
+            font-size: 2.5em;
+            color: var(--green);
+            font-weight: 700;
+        }
+
+        .header-stat-label {
+            font-size: 0.9em;
+            color: var(--text-dim);
+            text-transform: uppercase;
+        }
+
+        .critical-banner {
+            background: linear-gradient(135deg, rgba(255, 51, 51, 0.2), rgba(255, 136, 0, 0.2));
+            border: 2px solid var(--red);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 50px;
+            animation: alertPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes alertPulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 51, 51, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(255, 51, 51, 0.6); }
+        }
+
+        .critical-banner h3 {
+            color: var(--red);
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .critical-banner h3::before {
+            content: '⚠ ';
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50%, 100% { opacity: 1; }
+            25%, 75% { opacity: 0.3; }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: 30px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.4s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--green), transparent);
+            transition: left 0.5s;
+        }
+
+        .stat-card:hover::before { left: 100%; }
+
+        .stat-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 10px 40px rgba(0, 255, 65, 0.3);
+            border-color: var(--green);
+        }
+
+        .stat-icon { font-size: 3em; margin-bottom: 15px; }
+        
+        .stat-value {
+            font-size: 2.5em;
+            color: var(--green);
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
+        }
+
+        .stat-label {
+            color: var(--text-dim);
+            font-size: 0.9em;
+            text-transform: uppercase;
+        }
+
+        .stat-change {
+            margin-top: 10px;
+            font-size: 0.85em;
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .stat-change.negative { background: rgba(255, 51, 51, 0.2); color: var(--red); }
+        .stat-change.positive { background: rgba(0, 255, 65, 0.2); color: var(--green); }
+
+        section {
+            margin-bottom: 60px;
+            padding: 40px;
+            background: #0f1419;
+            border-left: 4px solid var(--green);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+        }
+
+        section:hover {
+            transform: translateX(8px);
+            box-shadow: -8px 4px 30px rgba(0, 255, 65, 0.2);
+        }
+
+        h2 {
+            font-size: 2em;
+            color: var(--green);
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+        }
+
+        h2::before {
+            content: '▶ ';
+            color: var(--cyan);
+            animation: blink 2s infinite;
+        }
+
+        h3 {
+            font-size: 1.5em;
+            color: var(--cyan);
+            margin: 35px 0 20px;
+            padding-left: 25px;
+            border-left: 4px solid var(--cyan);
+        }
+
+        .screenshot-container {
+            margin: 30px 0;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--bg-card);
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .screenshot-container:hover {
+            border-color: var(--green);
+            box-shadow: 0 8px 30px rgba(0, 255, 65, 0.3);
+            transform: scale(1.02);
+        }
+
+        .screenshot-header {
+            background: var(--bg-dark);
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .screenshot-title {
+            color: var(--cyan);
+            font-weight: 600;
+        }
+
+        .screenshot-title::before {
+            content: '📸 ';
+        }
+
+        .screenshot-badge {
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .screenshot-badge.critical { background: var(--red); color: white; }
+        .screenshot-badge.warning { background: var(--yellow); color: #000; }
+        .screenshot-badge.info { background: var(--cyan); color: #000; }
+
+        .screenshot-img {
+            width: 100%;
+            display: block;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .screenshot-img:hover { transform: scale(1.05); }
+
+        .screenshot-caption {
+            padding: 15px 20px;
+            background: var(--bg-dark);
+            color: var(--text-dim);
+            font-size: 0.9em;
+        }
+
+        .problem-box, .solution-box, .warning-box, .info-box {
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 8px;
+            border-left: 5px solid;
+        }
+
+        .problem-box { background: rgba(255, 51, 51, 0.1); border-color: var(--red); }
+        .solution-box { background: rgba(0, 255, 65, 0.05); border-color: var(--green); }
+        .warning-box { background: rgba(255, 215, 0, 0.08); border-color: var(--yellow); }
+        .info-box { background: rgba(0, 255, 255, 0.05); border-color: var(--cyan); }
+
+        .problem-box h4, .solution-box h4, .warning-box h4, .info-box h4 {
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .problem-box h4 { color: var(--red); }
+        .solution-box h4 { color: var(--green); }
+        .warning-box h4 { color: var(--yellow); }
+        .info-box h4 { color: var(--cyan); }
+
+        .code-block {
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--cyan);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Space Mono', monospace;
+            overflow-x: auto;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .code-language {
+            color: var(--green);
+            font-size: 0.85em;
+            text-transform: uppercase;
+        }
+
+        .code-copy-btn {
+            background: #0f1419;
+            border: 1px solid var(--green);
+            color: var(--green);
+            padding: 5px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .code-copy-btn:hover {
+            background: var(--green);
+            color: #000;
+        }
+
+        .roi-calculator {
+            background: linear-gradient(135deg, var(--bg-card), #151b23);
+            border: 2px solid var(--cyan);
+            border-radius: 12px;
+            padding: 40px;
+            margin: 40px 0;
+        }
+
+        .roi-calculator h3 {
+            color: var(--cyan);
+            text-align: center;
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            border: none;
+            padding: 0;
+        }
+
+        .roi-inputs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .roi-input-group label {
+            color: var(--text-dim);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .roi-input-group input {
+            width: 100%;
+            background: var(--bg-dark);
+            border: 2px solid var(--border);
+            color: var(--green);
+            padding: 12px;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            transition: all 0.3s;
+        }
+
+        .roi-input-group input:focus {
+            outline: none;
+            border-color: var(--green);
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
+        }
+
+        .roi-result {
+            background: var(--bg-dark);
+            border: 2px solid var(--green);
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .roi-result-value {
+            font-size: 3.5em;
+            color: var(--green);
+            font-weight: 700;
+            text-shadow: 0 0 20px rgba(0, 255, 65, 0.6);
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .comparison-side {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 25px;
+            border: 2px solid;
+            transition: all 0.3s;
+        }
+
+        .comparison-side.before { border-color: var(--red); }
+        .comparison-side.after { border-color: var(--green); }
+
+        .comparison-side:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 255, 65, 0.2);
+        }
+
+        .comparison-title {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .comparison-side.before .comparison-title { color: var(--red); }
+        .comparison-side.after .comparison-title { color: var(--green); }
+
+        .comparison-metric {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .metric-value { font-weight: 700; font-size: 1.1em; }
+        .comparison-side.before .metric-value { color: var(--red); }
+        .comparison-side.after .metric-value { color: var(--green); }
+
+        .timeline {
+            position: relative;
+            padding: 40px 0;
+            margin: 40px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--green), var(--cyan));
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) { flex-direction: row-reverse; }
+
+        .timeline-content {
+            width: 45%;
+            background: var(--bg-card);
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .timeline-content:hover {
+            border-color: var(--green);
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 255, 65, 0.3);
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: var(--green);
+            border: 4px solid var(--bg-dark);
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+        }
+
+        .timeline-month {
+            font-size: 1.3em;
+            color: var(--cyan);
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        footer {
+            margin-top: 80px;
+            padding: 50px;
+            background: linear-gradient(135deg, #0f1419, var(--bg-card));
+            border: 2px solid var(--green);
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(0, 255, 65, 0.3);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .contact-card {
+            background: var(--bg-card);
+            padding: 25px;
+            border-radius: 8px;
+            border: 2px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .contact-card:hover {
+            border-color: var(--green);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 65, 0.3);
+        }
+
+        .contact-icon { font-size: 2.5em; margin-bottom: 15px; }
+        .contact-label { color: var(--cyan); font-weight: 700; text-transform: uppercase; margin-bottom: 10px; }
+        .contact-value { color: var(--green); font-weight: 600; font-size: 1.2em; }
+        .contact-value a { color: var(--green); text-decoration: none; }
+        .contact-value a:hover { color: var(--cyan); }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active { display: flex; }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+            animation: modalSlideIn 0.4s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-img {
+            max-width: 100%;
+            max-height: 80vh;
+            border: 3px solid var(--green);
+            border-radius: 12px;
+            box-shadow: 0 0 50px rgba(0, 255, 65, 0.6);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: var(--red);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+        }
+
+        .modal-close:hover {
+            background: white;
+            color: var(--red);
+        }
+
+        ul, ol { margin: 20px 0; padding-left: 30px; }
+        li { margin-bottom: 12px; color: var(--text-dim); line-height: 1.8; }
+        ul li::marker { content: '▸ '; color: var(--green); font-size: 1.2em; }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            .comparison-grid { grid-template-columns: 1fr; }
+            .timeline::before { left: 30px; }
+            .timeline-item { flex-direction: row !important; }
+            .timeline-content { width: calc(100% - 80px); margin-left: 80px !important; }
+            .timeline-marker { left: 30px; }
+        }
+
+        ::-webkit-scrollbar { width: 14px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--green), var(--cyan)); border-radius: 7px; }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+
+    <div class="container">
+        <header>
+            <h1>⟨ SEO AUDIT ⟩</h1>
+            <div class="site-url">beautyfactory.md</div>
+            <p style="color: var(--text-dim); margin: 15px 0; font-size: 1.1em; position: relative; z-index: 1;">
+                Профессиональный технический и контентный анализ
+            </p>
+            <div class="header-stats">
+                <div><div class="header-stat-value">768</div><div class="header-stat-label">Organic Visits/Month</div></div>
+                <div><div class="header-stat-value">DR 6</div><div class="header-stat-label">Domain Rating</div></div>
+                <div><div class="header-stat-value">103</div><div class="header-stat-label">Indexed Pages</div></div>
+                <div><div class="header-stat-value">-50%</div><div class="header-stat-label">Query Drop</div></div>
+            </div>
+        </header>
+
+        <div class="critical-banner">
+            <h3>Критическое состояние сайта</h3>
+            <p style="font-size: 1.1em; line-height: 1.8;">
+                Сайт находится в <strong>критическом состоянии</strong> и занимает <strong>предпоследнее место</strong> среди конкурентов. 
+                Падение на <strong>50%</strong> по коммерческим запросам требует <strong>немедленного вмешательства</strong>.
+            </p>
+        </div>
+
+        <section>
+            <h2>Executive Summary</h2>
+            
+            <p style="font-size: 1.1em; margin-bottom: 30px; color: var(--text);">
+                Проведен глубокий технический аудит сайта <strong>beautyfactory.md</strong> с использованием Ahrefs, GSC, Screaming Frog. 
+                Выявлены критические проблемы, препятствующие органическому росту.
+            </p>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-value">768</div>
+                    <div class="stat-label">Organic Traffic</div>
+                    <div class="stat-change negative">↓ критически низкий</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-value">$30</div>
+                    <div class="stat-label">Traffic Value</div>
+                    <div class="stat-change negative">↓ минимальное</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📄</div>
+                    <div class="stat-value">103</div>
+                    <div class="stat-label">Organic Pages</div>
+                    <div class="stat-change negative">↓ недостаточно</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🔗</div>
+                    <div class="stat-value">DR 6</div>
+                    <div class="stat-label">Domain Rating</div>
+                    <div class="stat-change negative">↓ слабый</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🌐</div>
+                    <div class="stat-value">30</div>
+                    <div class="stat-label">Backlinks</div>
+                    <div class="stat-change positive">↑ +30 новых</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📡</div>
+                    <div class="stat-value">17</div>
+                    <div class="stat-label">Referring Domains</div>
+                    <div class="stat-change positive">↑ +17 новых</div>
+                </div>
+            </div>
+
+            <div class="screenshot-container">
+                <div class="screenshot-header">
+                    <div class="screenshot-title">Дублирование meta title на главной странице</div>
+                    <span class="screenshot-badge critical">Критично</span>
+                </div>
+                <img src="1764935308431_image.png" alt="Title duplication" class="screenshot-img" onclick="openModal(this.src)">
+                <div class="screenshot-caption">
+                    <strong>Проблема:</strong> Два тега &lt;title&gt; создают конфликт сигналов для поисковых систем и снижают релевантность.
+                </div>
+            </div>
+
+            <div class="screenshot-container">
+                <div class="screenshot-header">
+                    <div class="screenshot-title">Ссылочный профиль (Ahrefs Backlink Analysis)</div>
+                    <span class="screenshot-badge critical">Критично</span>
+                </div>
+                <img src="1764935327474_image.png" alt="Backlink profile" class="screenshot-img" onclick="openModal(this.src)">
+                <div class="screenshot-caption">
+                    <strong>Данные:</strong> DR 6, 30 backlinks, 17 referring domains. Критически низкий авторитет для e-commerce ниши.
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>1. Критические технические проблемы</h2>
+
+            <h3>1.1 Дублирование meta title</h3>
+
+            <div class="problem-box">
+                <h4>❌ Обнаруженная проблема</h4>
+                <p>В HTML коде главной страницы присутствуют <strong>два тега &lt;title&gt;</strong>:</p>
+                
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-language">HTML</span>
+                        <button class="code-copy-btn" onclick="copyCode(this)">Копировать</button>
+                    </div>
+                    <div class="code-content">
+&lt;title&gt;Beauty Factory - - Peste 5000 de produse cosmetice și accesorii[...]&lt;/title&gt;
+&lt;title&gt;Beauty Factory - Peste 5000 de produse cosmetice si accesorii[...]&lt;/title&gt;
+                    </div>
+                </div>
+
+                <p><strong>Последствия:</strong> Конфликт сигналов, снижение релевантности, непредсказуемое отображение в SERP</p>
+            </div>
+
+            <div class="solution-box">
+                <h4>✓ Техническое решение</h4>
+                <p><strong>Шаги исправления:</strong></p>
+                <ul>
+                    <li>Найти файл шаблона header.tpl или header.php</li>
+                    <li>Удалить дублирующий тег title</li>
+                    <li>Оптимизировать единственный title под SEO</li>
+                    <li>Проверить через View Page Source и Screaming Frog</li>
+                </ul>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-language">HTML - Правильный вариант</span>
+                        <button class="code-copy-btn" onclick="copyCode(this)">Копировать</button>
+                    </div>
+                    <div class="code-content">
+&lt;title&gt;Beauty Factory Moldova - Cosmetice și Produse | Peste 5000 de Produse&lt;/title&gt;
+                    </div>
+                </div>
+            </div>
+
+            <h3>1.2 Проблемы с H1 заголовком</h3>
+
+            <div class="problem-box">
+                <h4>❌ Выявленные проблемы</h4>
+                <ul>
+                    <li>Возможное дублирование H1</li>
+                    <li>H1 не оптимизирован под ключевые запросы</li>
+                    <li>Нарушение иерархии заголовков</li>
+                </ul>
+            </div>
+
+            <div class="solution-box">
+                <h4>✓ Правильная структура</h4>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-language">HTML</span>
+                        <button class="code-copy-btn" onclick="copyCode(this)">Копировать</button>
+                    </div>
+                    <div class="code-content">
+&lt;h1&gt;Cosmetice și Produse de Înfrumusețare în Moldova - Beauty Factory&lt;/h1&gt;
+&lt;h2&gt;Machiaj - Produse pentru Machiaj Profesional&lt;/h2&gt;
+&lt;h2&gt;Îngrijirea Feței - Creme și Seruri&lt;/h2&gt;
+                    </div>
+                </div>
+            </div>
+
+            <h3>1.3 Оптимизация robots.txt</h3>
+
+            <div class="screenshot-container">
+                <div class="screenshot-header">
+                    <div class="screenshot-title">Проблемы с meta description</div>
+                    <span class="screenshot-badge critical">Отсутствует</span>
+                </div>
+                <img src="1764935428903_image.png" alt="Missing meta description" class="screenshot-img" onclick="openModal(this.src)">
+                <div class="screenshot-caption">
+                    <strong>Проблема:</strong> Meta description полностью отсутствует. Google генерирует его автоматически, часто неудачно.
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <h4>⚠ Критические ошибки в robots.txt</h4>
+                <ul>
+                    <li>Блокировка важных ресурсов (CSS, JS, изображения)</li>
+                    <li>Незакрытые параметры фильтрации → дубли страниц</li>
+                    <li>Отсутствие указания sitemap.xml</li>
+                    <li>Неоптимальный crawl-delay</li>
+                </ul>
+            </div>
+
+            <div class="solution-box">
+                <h4>✓ Профессиональные рекомендации</h4>
+                
+                <p><strong>Обязательно закрыть:</strong></p>
+                <ul>
+                    <li>Админ-панель, корзину, checkout</li>
+                    <li>URL с параметрами ?sort=, ?filter=, ?page=</li>
+                </ul>
+
+                <p><strong>Обязательно открыть:</strong></p>
+                <ul>
+                    <li>Изображения товаров (/image/)</li>
+                    <li>CSS и JavaScript для рендеринга</li>
+                    <li>Каталог товаров</li>
+                </ul>
+
+                <p><strong>Указать XML Sitemap:</strong></p>
+                <ul>
+                    <li>Sitemap: https://beautyfactory.md/sitemap.xml</li>
+                    <li>Создать отдельные карты для товаров и категорий</li>
+                </ul>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-language">robots.txt - Правильная конфигурация</span>
+                        <button class="code-copy-btn" onclick="copyCode(this)">Копировать</button>
+                    </div>
+                    <div class="code-content">
+User-agent: *
+
+# Закрыть служебные разделы
+Disallow: /admin/
+Disallow: /checkout/
+Disallow: /cart/
+Disallow: /*?sort=
+Disallow: /*?filter=
+
+# Открыть важные ресурсы
+Allow: /image/
+Allow: /catalog/
+Allow: /*.css$
+Allow: /*.js$
+
+# XML Sitemaps
+Sitemap: https://beautyfactory.md/sitemap.xml
+Sitemap: https://beautyfactory.md/sitemap-products.xml
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>2. Проблемы внешней оптимизации</h2>
+
+            <h3>2.1 Критически слабый ссылочный профиль</h3>
+
+            <div class="screenshot-container">
+                <div class="screenshot-header">
+                    <div class="screenshot-title">Падение коммерческих запросов (Ahrefs)</div>
+                    <span class="screenshot-badge critical">Критично</span>
+                </div>
+                <img src="1764935353423_image.png" alt="Organic positions drop" class="screenshot-img" onclick="openModal(this.src)">
+                <div class="screenshot-caption">
+                    <strong>График:</strong> Резкое падение commercial (желтая) и transactional (красная) запросов с мая 2025. Пик ~340, сейчас ~170 (-50%).
+                </div>
+            </div>
+
+            <div class="problem-box">
+                <h4>❌ Почему это критично</h4>
+                <p>DR 6 для e-commerce косметики — <strong>катастрофа</strong>. Конкуренты с DR 20-40+ имеют непреодолимое преимущество.</p>
+                <ul>
+                    <li>Невозможность конкуренции за топ позиции</li>
+                    <li>Низкое доверие Google</li>
+                    <li>Медленная индексация</li>
+                    <li>Уязвимость к апдейтам алгоритма</li>
+                </ul>
+            </div>
+
+            <div class="solution-box">
+                <h4>✓ Стратегический plan link-building (6 месяцев)</h4>
+
+                <p><strong>ФАЗА 1: Локальные источники (Месяцы 1-2)</strong></p>
+                <ul>
+                    <li>Бизнес-каталоги: 999.md, Point.md, Catalog.md</li>
+                    <li>Локальные СМИ: Locals.md, Newsmaker.md</li>
+                    <li>Google My Business + Yandex Справочник</li>
+                    <li><strong>Цель:</strong> 15-20 локальных ссылок, DR → 8-10</li>
+                </ul>
+
+                <p><strong>ФАЗА 2: Контент-маркетинг (Месяцы 2-4)</strong></p>
+                <ul>
+                    <li>Экспертные статьи: "Ghidul de îngrijire a pielii pentru Moldova"</li>
+                    <li>Гостевые посты на beauty-блогах</li>
+                    <li>Инфографики для соцсетей</li>
+                    <li><strong>Цель:</strong> 20-30 естественных ссылок</li>
+                </ul>
+
+                <p><strong>ФАЗА 3: Digital PR (Месяцы 3-6)</strong></p>
+                <ul>
+                    <li>Партнерства с инфлюенсерами</li>
+                    <li>Спонсорство beauty-мероприятий</li>
+                    <li>Интервью как эксперт</li>
+                    <li><strong>Цель:</strong> 15-20 авторитетных ссылок</li>
+                </ul>
+
+                <p style="border: 2px solid var(--green); padding: 20px; border-radius: 8px; background: rgba(0, 255, 65, 0.05); margin-top: 20px;">
+                    <strong>ИТОГО за 6 месяцев:</strong><br>
+                    • 60-85 качественных backlinks<br>
+                    • DR 15-20 (рост в 2.5-3 раза)<br>
+                    • Естественный профиль без спама<br>
+                    • Органический рост авторитета
+                </p>
+            </div>
+
+            <div class="screenshot-container">
+                <div class="screenshot-header">
+                    <div class="screenshot-title">Сравнение с конкурентами</div>
+                    <span class="screenshot-badge warning">Отставание</span>
+                </div>
+                <img src="1764935510999_image.png" alt="Competitor comparison" class="screenshot-img" onclick="openModal(this.src)">
+                <div class="screenshot-caption">
+                    <strong>Данные:</strong> beautyfactory.md - 768 visits, 103 pages. Конкуренты значительно опережают по всем метрикам.
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>3. Критические проблемы контента</h2>
+
+            <h3>3.1 Пустые карточки товаров</h3>
+
+            <div class="screenshot-container">
+                <div class="screenshot-header">
+                    <div class="screenshot-title">Пустая карточка товара</div>
+                    <span class="screenshot-badge critical">Критично</span>
+                </div>
+                <img src="1764935366629_image.png" alt="Empty product card" class="screenshot-img" onclick="openModal(this.src)">
+                <div class="screenshot-caption">
+                    <strong>Проблема:</strong> Пустая вкладка "Descriere", нет характеристик, 0 отзывов. Нет информации для покупки.
+                </div>
+            </div>
+
+            <div class="problem-box">
+                <h4>❌ Катастрофическое состояние</h4>
+                <ul>
+                    <li>100% товаров без описаний</li>
+                    <li>Нет технических характеристик</li>
+                    <li>0 отзывов = нет социальных доказательств</li>
+                    <li>Только название + цена + фото</li>
+                </ul>
+                <p><strong>Последствия:</strong> Нулевая релевантность, высокий bounce rate, низкая конверсия, невозможность ранжирования.</p>
+            </div>
+
+            <div class="solution-box">
+                <h4>✓ Идеальная карточка товара</h4>
+
+                <p><strong>Структура описания (300-500 слов):</strong></p>
+                <ol>
+                    <li>Вводный абзац (50-70 слов): что это, для кого</li>
+                    <li>Ключевые преимущества (100-150 слов): 4-5 bullet points</li>
+                    <li>Состав и ингредиенты (80-100 слов)</li>
+                    <li>Способ применения (60-80 слов)</li>
+                    <li>Результаты (40-60 слов)</li>
+                    <li>Для кого подходит (30-40 слов)</li>
+                    <li>CTA (20-30 слов)</li>
+                </ol>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-language">Пример описания товара</span>
+                        <button class="code-copy-btn" onclick="copyCode(this)">Копировать</button>
+                    </div>
+                    <div class="code-content" style="white-space: pre-wrap;">
+Glam Origin Radiance Sun Cream SPF50+ PA++++ 50g
+Cremă de protecție solară premium cu efect de iluminare
+
+Glam Origin Radiance Sun Cream este o cremă de înaltă performanță, special 
+concepută pentru ten sensibil. Cu SPF50+ și PA++++, oferă protecție maximă.
+
+BENEFICII:
+✓ Protecție maximă SPF50+ PA++++
+✓ Efect radiant natural
+✓ Non-comedogenă
+✓ Rezistentă la apă - 80 minute
+
+MOD DE UTILIZARE:
+Aplicați cu 15-20 minute înainte de expunere.
+
+COMANDĂ ACUM cu livrare gratuită în Chișinău!
+                    </div>
+                </div>
+
+                <p><strong>Schema.org разметка:</strong></p>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-language">JSON-LD</span>
+                        <button class="code-copy-btn" onclick="copyCode(this)">Копировать</button>
+                    </div>
+                    <div class="code-content">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": "Glam Origin Radiance Sun Cream SPF50+",
+  "brand": {"@type": "Brand", "name": "Glam Origin"},
+  "offers": {
+    "@type": "Offer",
+    "priceCurrency": "MDL",
+    "price": "128.0",
+    "availability": "https://schema.org/InStock"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.7",
+    "reviewCount": "23"
+  }
+}
+                    </div>
+                </div>
+            </div>
+
+            <h3>3.2 Проблемы страниц категорий</h3>
+
+            <div class="screenshot-container">
+                <div class="screenshot-header">
+                    <div class="screenshot-title">Неоптимизированная категория</div>
+                    <span class="screenshot-badge warning">Упущенный потенциал</span>
+                </div>
+                <img src="1764935380347_image.png" alt="Category meta tags" class="screenshot-img" onclick="openModal(this.src)">
+                <div class="screenshot-caption">
+                    <strong>Проблема:</strong> Title короткий (25 символов), meta description отсутствует. Низкий CTR в SERP.
+                </div>
+            </div>
+
+            <div class="screenshot-container">
+                <div class="screenshot-header">
+                    <div class="screenshot-title">Страница категории без оптимизации</div>
+                    <span class="screenshot-badge critical">Нет контента</span>
+                </div>
+                <img src="1764935403339_image.png" alt="Category page" class="screenshot-img" onclick="openModal(this.src)">
+                <div class="screenshot-caption">
+                    <strong>Проблема:</strong> Только листинг товаров, нет SEO-текста, нет фильтров по тегам.
+                </div>
+            </div>
+
+            <div class="solution-box">
+                <h4>✓ Оптимизация категорий</h4>
+
+                <p><strong>Правильные meta-теги:</strong></p>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-language">HTML</span>
+                        <button class="code-copy-btn" onclick="copyCode(this)">Копировать</button>
+                    </div>
+                    <div class="code-content">
+&lt;title&gt;Cremă de Față Moldova | 200+ Produse | Livrare Gratuită | Beauty Factory&lt;/title&gt;
+
+&lt;meta name="description" content="Cumpără cremă de față în Moldova ✓ Peste 200 produse 
+✓ Branduri: Glam, Enough, Lavish ✓ Livrare gratuită"&gt;
+                    </div>
+                </div>
+
+                <p><strong>SEO-текст для категории (600-1000 слов):</strong></p>
+                <ul>
+                    <li>Размещать под листингом товаров</li>
+                    <li>H2-H3 подзаголовки с ключевыми словами</li>
+                    <li>Внутренние ссылки на товары и категории</li>
+                    <li>Обновлять ежемесячно</li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <div class="roi-calculator">
+                <h3>💰 Калькулятор ROI от SEO</h3>
+                <p style="text-align: center; color: var(--text-dim); margin-bottom: 30px;">
+                    Рассчитайте потенциальную прибыль от внедрения рекомендаций
+                </p>
+
+                <div class="roi-inputs">
+                    <div class="roi-input-group">
+                        <label>Средний чек (MDL)</label>
+                        <input type="number" id="avgCheck" value="250" oninput="calculateROI()">
+                    </div>
+                    <div class="roi-input-group">
+                        <label>Конверсия (%)</label>
+                        <input type="number" id="conversion" value="2" step="0.1" oninput="calculateROI()">
+                    </div>
+                    <div class="roi-input-group">
+                        <label>Текущий трафик</label>
+                        <input type="number" id="currentTraffic" value="768" oninput="calculateROI()">
+                    </div>
+                    <div class="roi-input-group">
+                        <label>Рост трафика (%)</label>
+                        <input type="number" id="trafficGrowth" value="200" oninput="calculateROI()">
+                    </div>
+                </div>
+
+                <div class="roi-result">
+                    <div class="roi-result-value" id="roiValue">+11,520 MDL</div>
+                    <div style="color: var(--text-dim); margin-top: 10px;">Дополнительная месячная прибыль</div>
+                    <p style="margin-top: 15px; color: var(--text-dim);">
+                        За 12 месяцев: <span style="color: var(--green); font-weight: 700;" id="roiYearly">138,240 MDL</span>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>4. Прогноз: До и После</h2>
+
+            <div class="comparison-grid">
+                <div class="comparison-side before">
+                    <div class="comparison-title">До оптимизации</div>
+                    <div class="comparison-metric">
+                        <span>Органический трафик</span>
+                        <span class="metric-value">768/день</span>
+                    </div>
+                    <div class="comparison-metric">
+                        <span>Domain Rating</span>
+                        <span class="metric-value">DR 6</span>
+                    </div>
+                    <div class="comparison-metric">
+                        <span>Страницы</span>
+                        <span class="metric-value">103</span>
+                    </div>
+                    <div class="comparison-metric">
+                        <span>Backlinks</span>
+                        <span class="metric-value">30</span>
+                    </div>
+                    <div class="comparison-metric">
+                        <span>Позиция</span>
+                        <span class="metric-value">Предпоследнее</span>
+                    </div>
+                </div>
+
+                <div class="comparison-side after">
+                    <div class="comparison-title">После (6 мес)</div>
+                    <div class="comparison-metric">
+                        <span>Органический трафик</span>
+                        <span class="metric-value">1,920+/день</span>
+                    </div>
+                    <div class="comparison-metric">
+                        <span>Domain Rating</span>
+                        <span class="metric-value">DR 18</span>
+                    </div>
+                    <div class="comparison-metric">
+                        <span>Страницы</span>
+                        <span class="metric-value">400+</span>
+                    </div>
+                    <div class="comparison-metric">
+                        <span>Backlinks</span>
+                        <span class="metric-value">110+</span>
+                    </div>
+                    <div class="comparison-metric">
+                        <span>Позиция</span>
+                        <span class="metric-value">Топ-3</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="screenshot-container">
+                <div class="screenshot-header">
+                    <div class="screenshot-title">Динамика органического трафика</div>
+                    <span class="screenshot-badge info">Прогноз</span>
+                </div>
+                <img src="1764935457678_image.png" alt="Traffic growth" class="screenshot-img" onclick="openModal(this.src)">
+                <div class="screenshot-caption">
+                    <strong>График:</strong> История роста за 2 года. Виден потенциал восстановления при правильной оптимизации.
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>5. Пошаговый план</h2>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-month">Месяц 1</div>
+                        <ul>
+                            <li>Исправление дублирования title и H1</li>
+                            <li>Оптимизация robots.txt</li>
+                            <li>Настройка XML sitemap</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-month">Месяц 2</div>
+                        <ul>
+                            <li>Наполнение 50 товаров</li>
+                            <li>SEO-тексты для 10 категорий</li>
+                            <li>Schema.org разметка</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-month">Месяц 3</div>
+                        <ul>
+                            <li>Link-building: 20-30 ссылок</li>
+                            <li>Регистрация в каталогах</li>
+                            <li>Гостевые публикации</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-month">Месяцы 4-6</div>
+                        <ul>
+                            <li>Завершение наполнения</li>
+                            <li>20-30 статей</li>
+                            <li>Link-building: 50+ ссылок</li>
+                            <li>500+ отзывов</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <h4>ℹ Результаты через 6 месяцев</h4>
+                <ul>
+                    <li><strong>+150-200%</strong> органического трафика</li>
+                    <li><strong>DR 15-20</strong> (рост в 2.5-3 раза)</li>
+                    <li><strong>400+</strong> индексируемых страниц</li>
+                    <li><strong>Топ-5</strong> по коммерческим запросам</li>
+                    <li><strong>+30-40%</strong> конверсии</li>
+                </ul>
+            </div>
+        </section>
+
+        <footer>
+            <h2 style="color: var(--green); margin-bottom: 30px;">⟨ Подготовлено специалистами ⟩</h2>
+
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <div class="contact-icon">👨‍💻</div>
+                    <div class="contact-label">Specialist</div>
+                    <div class="contact-value">Alexander Garbuz</div>
+                </div>
+
+                <div class="contact-card">
+                    <div class="contact-icon">🎯</div>
+                    <div class="contact-label">Position</div>
+                    <div class="contact-value">SEO Specialist</div>
+                </div>
+
+                <div class="contact-card">
+                    <div class="contact-icon">🌐</div>
+                    <div class="contact-label">Website</div>
+                    <div class="contact-value"><a href="https://garbuz.online" target="_blank">garbuz.online</a></div>
+                </div>
+
+                <div class="contact-card">
+                    <div class="contact-icon">📞</div>
+                    <div class="contact-label">Telefon</div>
+                    <div class="contact-value"><a href="tel:+79083925">+7 908 39 25</a></div>
+                </div>
+
+                <div class="contact-card">
+                    <div class="contact-icon">📅</div>
+                    <div class="contact-label">Data</div>
+                    <div class="contact-value">05.12.2025</div>
+                </div>
+            </div>
+
+            <p style="margin-top: 40px; color: var(--text-dim); font-size: 0.9em;">
+                Для детальной консультации или заказа услуг по SEO-продвижению свяжитесь с нами.
+            </p>
+        </footer>
+    </div>
+
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">✕ Закрыть</button>
+            <img src="" alt="" class="modal-img" id="modalImg">
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+
+        function openModal(src) {
+            document.getElementById('modal').classList.add('active');
+            document.getElementById('modalImg').src = src;
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('modal').addEventListener('click', (e) => {
+            if (e.target.id === 'modal') closeModal();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        function copyCode(btn) {
+            const codeBlock = btn.closest('.code-block');
+            const code = codeBlock.querySelector('.code-content').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.textContent = '✓ Скопировано!';
+                btn.style.background = 'var(--green)';
+                btn.style.color = '#000';
+                setTimeout(() => {
+                    btn.textContent = 'Копировать';
+                    btn.style.background = '';
+                    btn.style.color = '';
+                }, 2000);
+            });
+        }
+
+        function calculateROI() {
+            const avgCheck = parseFloat(document.getElementById('avgCheck').value) || 0;
+            const conversion = parseFloat(document.getElementById('conversion').value) / 100 || 0;
+            const currentTraffic = parseFloat(document.getElementById('currentTraffic').value) || 0;
+            const growthPercent = parseFloat(document.getElementById('trafficGrowth').value) / 100 || 0;
+
+            const newTraffic = currentTraffic * (1 + growthPercent);
+            const additionalTraffic = newTraffic - currentTraffic;
+            const additionalOrders = additionalTraffic * conversion;
+            const monthlyRevenue = additionalOrders * avgCheck;
+            const yearlyRevenue = monthlyRevenue * 12;
+
+            document.getElementById('roiValue').textContent = 
+                '+' + monthlyRevenue.toLocaleString('ro-RO', {maximumFractionDigits: 0}) + ' MDL';
+            document.getElementById('roiYearly').textContent = 
+                yearlyRevenue.toLocaleString('ro-RO', {maximumFractionDigits: 0}) + ' MDL';
+        }
+
+        calculateROI();
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'opacity 0.6s, transform 0.6s';
+            observer.observe(section);
+        });
+
+        console.log('%c⟨ GARBUZ.ONLINE ⟩', 'color: #00ff41; font-size: 24px; font-weight: bold;');
+        console.log('%cSEO Specialist | +79083925', 'color: #00ffff; font-size: 14px;');
+    </script>
+</body>
+</html>
